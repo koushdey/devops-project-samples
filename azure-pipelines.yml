@@ -3,6 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
+
 - master
 
 resources:
@@ -26,3 +27,11 @@ stages:
         containerCommand: build
         dockerfile: '$(Build.SourcesDirectory)/dotnet/aspnetcore/container/Application/aspnet-core-dotnet-core/Dockerfile'
         includeLatestTag: true
+    - task: Kubernetes@0
+      inputs:
+        kubernetesServiceEndpoint: 'kodeyPeTestDefault'
+        namespace: 'default'
+        command: 'get'
+        arguments: 'services'
+        secretType: 'dockerRegistry'
+        containerRegistryType: 'Azure Container Registry'
